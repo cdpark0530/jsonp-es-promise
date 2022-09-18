@@ -67,15 +67,15 @@ export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> =>
       resolve(data);
     };
 
-    // Add querystring component
     if (url.indexOf('?') < 0) {
       url += '?';
+    } else if (url.indexOf('?') !== url.length - 1) {
+      url += '&';
     }
 
-    url += `${params}&${callbackParam}=${encodeURIComponent(windowVarName)}`.replace(
-      /^&+|&+$/g,
-      '',
-    );
+    const searchParams = new URLSearchParams(params);
+    searchParams.append(callbackParam, windowVarName);
+    url += searchParams.toString();
 
     scriptEl = document.createElement('script');
     scriptEl.src = url;
