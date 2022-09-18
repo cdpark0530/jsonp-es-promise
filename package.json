@@ -1,0 +1,38 @@
+{
+  "name": "jsonp-es-promise",
+  "version": "0.0.1",
+  "description": "Typed jsonp using promise",
+  "license": "MIT",
+  "author": "cdpark0530",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdpark0530/jsonp-es-promise.git"
+  },
+  "keywords": [
+    "jsonp",
+    "promise",
+    "async",
+    "typescript"
+  ],
+  "bugs": {
+    "url": "https://github.com/cdpark0530/jsonp-es-promise/issues"
+  },
+  "homepage": "https://github.com/cdpark0530/jsonp-es-promise#readme"
+}

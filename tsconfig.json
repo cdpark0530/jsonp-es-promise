@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "CommonJs",
+    "target": "ESNext",
+    "declaration": true,
+    "outDir": "dist",
+    "skipLibCheck": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
+    "experimentalDecorators": true,
+    "incremental": false,
+    "resolveJsonModule": true,
+  },
+  "include": [
+    "src"
+  ]
+}
