@@ -8,19 +8,27 @@ export interface JsonpResult<R> {
 export interface JsonpOptions {
   params?: string;
   timeout?: number;
-  callbackName?: string;
+  /**
+   * @default "jsonp"
+   */
+  callbackParam?: string;
+  callbackKey?: string;
+  /**
+   * will be ignored if `callbackName` is defined
+   */
   prefix?: string;
 }
 
 export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> => {
-  const { params, prefix, timeout, callbackName } = {
+  const { params, prefix, timeout, callbackParam, callbackKey }: JsonpOptions = {
     timeout: 15000,
     params: '__callback',
+    callbackParam: 'jsonp',
     prefix: '__jp',
     ...options,
   };
 
-  const windowVarName = callbackName ?? `${prefix}${callbackCount++}`;
+  const windowVarName = callbackKey ?? `${prefix}${callbackCount++}`;
   let scriptEl: HTMLScriptElement | undefined = undefined;
   let timer: number | undefined = undefined;
 
@@ -64,7 +72,10 @@ export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> =>
       url += '?';
     }
 
-    url += `${params}&callback=${encodeURIComponent(windowVarName)}`.replace(/^&+|&+$/g, '');
+    url += `${params}&${callbackParam}=${encodeURIComponent(windowVarName)}`.replace(
+      /^&+|&+$/g,
+      '',
+    );
 
     scriptEl = document.createElement('script');
     scriptEl.src = url;
