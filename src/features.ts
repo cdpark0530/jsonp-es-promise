@@ -21,7 +21,10 @@ export interface JsonpOptions {
    * will be ignored if `callbackName` is defined
    */
   prefix?: string;
-  jQueryInterop?: true;
+  /**
+   * will append `_=<timestamp>` to querystring
+   */
+  jQueryInterop?: boolean;
 }
 
 export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> => {
