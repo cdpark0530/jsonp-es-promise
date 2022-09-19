@@ -9,18 +9,23 @@ export interface JsonpOptions {
   params?: string;
   timeout?: number;
   /**
+   * URL parameter name to tell server jsonp callback name
    * @default "jsonp"
    */
   callbackParam?: string;
-  callbackKey?: string;
+  /**
+   * jsonp callback name
+   */
+  callbackName?: string;
   /**
    * will be ignored if `callbackName` is defined
    */
   prefix?: string;
+  jQueryInterop?: true;
 }
 
 export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> => {
-  const { params, prefix, timeout, callbackParam, callbackKey }: JsonpOptions = {
+  const { params, prefix, timeout, callbackParam, callbackName, jQueryInterop }: JsonpOptions = {
     timeout: 15000,
     params: '__callback',
     callbackParam: 'jsonp',
@@ -28,7 +33,7 @@ export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> =>
     ...options,
   };
 
-  const windowVarName = callbackKey ?? `${prefix}${callbackCount++}`;
+  const windowVarName = callbackName ?? `${prefix}${callbackCount++}`;
   let scriptEl: HTMLScriptElement | undefined = undefined;
   let timer: number | undefined = undefined;
 
@@ -75,7 +80,6 @@ export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> =>
       }, timeout);
     }
 
-
     if (url.indexOf('?') < 0) {
       url += '?';
     } else if (url.indexOf('?') !== url.length - 1) {
@@ -84,6 +88,9 @@ export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> =>
 
     const searchParams = new URLSearchParams(params);
     searchParams.append(callbackParam, windowVarName);
+    if (jQueryInterop) {
+      searchParams.append('_', Date.now().toString());
+    }
     url += searchParams.toString();
 
     scriptEl = document.createElement('script');
