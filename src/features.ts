@@ -54,18 +54,27 @@ export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> =>
 
   let cancel = noop;
   const promise = new Promise<R>((resolve, reject) => {
-    if (timeout) {
-      timer = setTimeout(function () {
-        cleanup();
-        reject(new Error(`jsonp for reqeust ${windowVarName} has been timeout`));
-      }, timeout);
-    }
-
     // @ts-expect-error inevitable type-unsafe code for jsonp
     window[windowVarName] = (data) => {
       cleanup();
       resolve(data);
     };
+
+    cancel = () => {
+      // @ts-expect-error inevitable type-unsafe code for jsonp
+      if (window[windowVarName] !== noop) {
+        cleanup();
+        reject(new Error(`jsonp for reqeust ${windowVarName} has been canceled`));
+      }
+    };
+
+    if (timeout) {
+      timer = setTimeout(() => {
+        cleanup();
+        reject(new Error(`jsonp for reqeust ${windowVarName} has been timeout`));
+      }, timeout);
+    }
+
 
     if (url.indexOf('?') < 0) {
       url += '?';
@@ -80,14 +89,6 @@ export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> =>
     scriptEl = document.createElement('script');
     scriptEl.src = url;
     scriptAppendTarget.parentNode?.insertBefore(scriptEl, scriptAppendTarget);
-
-    cancel = () => {
-      // @ts-expect-error inevitable type-unsafe code for jsonp
-      if (window[windowVarName]) {
-        cleanup();
-        reject(new Error(`jsonp for reqeust ${windowVarName} has been canceled`));
-      }
-    };
   });
 
   return {
