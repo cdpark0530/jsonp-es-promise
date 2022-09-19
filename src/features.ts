@@ -22,17 +22,19 @@ export interface JsonpOptions {
    */
   prefix?: string;
   /**
-   * will append `_=<timestamp>` to querystring
+   * URL parameter name to append to querystring to avoid script caching
+   * @default "_"
    */
-  jQueryInterop?: boolean;
+  incrementalParam?: string;
 }
 
 export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> => {
-  const { params, prefix, timeout, callbackParam, callbackName, jQueryInterop }: JsonpOptions = {
+  const { params, prefix, timeout, callbackParam, callbackName, incrementalParam }: JsonpOptions = {
     timeout: 15000,
     params: '__callback',
     callbackParam: 'jsonp',
     prefix: '__jp',
+    incrementalParam: '_',
     ...options,
   };
 
@@ -91,9 +93,7 @@ export const jsonp = <R>(url: string, options?: JsonpOptions): JsonpResult<R> =>
 
     const searchParams = new URLSearchParams(params);
     searchParams.append(callbackParam, windowVarName);
-    if (jQueryInterop) {
-      searchParams.append('_', Date.now().toString());
-    }
+    searchParams.append(incrementalParam, Date.now().toString());
     url += searchParams.toString();
 
     scriptEl = document.createElement('script');
