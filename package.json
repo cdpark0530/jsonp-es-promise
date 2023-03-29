@@ -1,6 +1,6 @@
 {
   "name": "jsonp-es-promise",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Typed jsonp using promise",
   "license": "MIT",
   "author": "cdpark0530",
@@ -15,12 +15,14 @@
     "build:es": "babel src -d --out-dir 'dist' --extensions '.ts,.tsx'",
     "types": "tsc"
   },
+  "dependencies": {
+    "@babel/runtime-corejs3": "^7.21.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
     "@babel/plugin-transform-runtime": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.21.0",
-    "@babel/runtime-corejs3": "^7.21.0",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
     "eslint": "^8.13.0",
