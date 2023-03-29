@@ -1,6 +1,6 @@
 {
   "name": "jsonp-es-promise",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Typed jsonp using promise",
   "license": "MIT",
   "author": "cdpark0530",
